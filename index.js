@@ -1,4 +1,4 @@
-const port= 4000;
+const port= process.env.port || 4000;
 const express= require("express");
 require("./db/conn");
 const Product= require("./models/products");
@@ -16,6 +16,12 @@ app.use(express.urlencoded({extended: true}));
 
 // Database connection with mongodb
 // mongoose.connect("mongodb+srv://vishalgupta11zx:aarvidb@cluster0.evqqsqa.mongodb.net/e-commerce");
+
+
+app.use(cors({
+  origin: ['https://my-ecom-frontend-snowy.vercel.app/', 'https://your-https://my-ecom-admin-254o.vercel.app/git.vercel.app'],
+  credentials: true
+}));
 
 // API Creation
 app.get("/",(req, res)=>{
