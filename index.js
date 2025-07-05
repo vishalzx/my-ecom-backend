@@ -13,15 +13,12 @@ const cors= require("cors");
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({extended: true}));
-require('dotenv').config();
-const frontendURL= process.env.frontend_URI;
-const adminURL= process.env.admin_URI;
 // Database connection with mongodb
 // mongoose.connect("mongodb+srv://vishalgupta11zx:aarvidb@cluster0.evqqsqa.mongodb.net/e-commerce");
 
 
 app.use(cors({
-  origin: [frontendURL, adminURL],
+  origin: ["https://my-ecom-frontend-snowy.vercel.app/", "https://my-ecom-admin-254o.vercel.app/"],
   credentials: true
 }));
 
@@ -31,24 +28,64 @@ app.get("/",(req, res)=>{
 })
 
 // image storage engine
-const storage= multer.diskStorage({
-    destination: './upload/images',
-    filename: (req, file, cb)=>{
-        return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
-    }
-})
+// const storage= multer.diskStorage({
+//     destination: './upload/images',
+//     filename: (req, file, cb)=>{
+//         return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
+//     }
+// })
 
-const upload= multer({storage: storage});
+// const upload= multer({storage: storage});
 
-// Creating Upload Endpoint for images
+// // Creating Upload Endpoint for images
+// app.use('/images', express.static('upload/images'));
+
+// app.post("/upload", upload.single('product'),(req, res)=>{
+//     res.json({
+//         success: 1,
+//         image_url: `http://localhost:${port}/images/${req.file.filename}`
+//     })
+// })
+
+
+
+
+
+
+
+const multer = require('multer');
+const path = require('path');
+
+// Set up storage
+const storage = multer.diskStorage({
+  destination: './upload/images',
+  filename: (req, file, cb) => {
+    cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
+  },
+});
+
+const upload = multer({ storage });
+
+// Serve static files from /upload/images
 app.use('/images', express.static('upload/images'));
 
-app.post("/upload", upload.single('product'),(req, res)=>{
-    res.json({
-        success: 1,
-        image_url: `http://localhost:${port}/images/${req.file.filename}`
-    })
-})
+// Upload endpoint
+app.post('/upload', upload.single('product'), (req, res) => {
+  const fullUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+  res.json({
+    success: 1,
+    image_url: fullUrl,
+  });
+});
+
+
+
+
+
+
+
+
+
 
 // Schema for creating products
 // const Product= mongoose.model("Product",{
