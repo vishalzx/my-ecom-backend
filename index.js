@@ -53,8 +53,8 @@ app.get("/",(req, res)=>{
 
 
 
-const multer = require('multer');
-const path = require('path');
+// const multer = require('multer');
+// const path = require('path');
 
 // Set up storage
 const storage = multer.diskStorage({
