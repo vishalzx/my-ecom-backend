@@ -13,13 +13,15 @@ const cors= require("cors");
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({extended: true}));
-
+require('dotenv').config();
+const frontendURL= process.env.frontend_URI;
+const adminURL= process.env.admin_URI;
 // Database connection with mongodb
 // mongoose.connect("mongodb+srv://vishalgupta11zx:aarvidb@cluster0.evqqsqa.mongodb.net/e-commerce");
 
 
 app.use(cors({
-  origin: ['https://my-ecom-frontend-snowy.vercel.app/', 'https://your-https://my-ecom-admin-254o.vercel.app/git.vercel.app'],
+  origin: [frontendURL, adminURL],
   credentials: true
 }));
 
