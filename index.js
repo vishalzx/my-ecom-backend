@@ -71,7 +71,7 @@ app.use('/images', express.static('upload/images'));
 
 // Upload endpoint
 app.post('/upload', upload.single('product'), (req, res) => {
-  const fullUrl = `https://my-ecom-admin-254o.vercel.app/images/${req.file.filename}`;
+  const fullUrl = `https://my-ecom-backend.onrender.com/images/${req.file.filename}`;
   res.json({
     success: 1,
     image_url: fullUrl,
