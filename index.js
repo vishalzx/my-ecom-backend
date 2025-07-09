@@ -1,4 +1,4 @@
-const port= process.env.port || 4000;
+const port= process.env.PORT || 4000;
 const express= require("express");
 require("./db/conn");
 const Product= require("./models/products");
