@@ -1,3 +1,3 @@
-MONGODB_URI=mongodb+srv://vishalgupta11zx:aarvidb@cluster0.evqqsqa.mongodb.net/e-commerce
-frontend_URI=https://my-ecom-frontend-snowy.vercel.app/
-admin_URI=https://your-https://my-ecom-admin-254o.vercel.app/git.vercel.app
+RAZORPAY_KEY_ID=rzp_test_oP5bng744pk0Z3
+RAZORPAY_KEY_SECRET=xmkeCZjCTx907XjwAv2mYPuO
+PORT=4000

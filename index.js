@@ -1,4 +1,6 @@
 const port= process.env.PORT || 4000;
+require('dotenv').config();
+
 const express= require("express");
 require("./db/conn");
 const Product= require("./models/products");
@@ -9,6 +11,7 @@ const jwt= require("jsonwebtoken");
 const multer= require("multer");
 const path= require("path");
 const cors= require("cors");
+const Razorpay= require("razorpay");
 
 app.use(express.json());
 app.use(cors());
@@ -71,7 +74,7 @@ app.use('/images', express.static('upload/images'));
 
 // Upload endpoint
 app.post('/upload', upload.single('product'), (req, res) => {
-  const fullUrl = `https://my-ecom-backend.onrender.com/images/${req.file.filename}`;
+  const fullUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
   res.json({
     success: 1,
     image_url: fullUrl,
@@ -81,7 +84,26 @@ app.post('/upload', upload.single('product'), (req, res) => {
 
 
 
+// Payment Integration
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET
+});
 
+app.post("/create-order", async (req, res) => {
+  const options = {
+    amount: req.body.amount * 100, // amount in smallest currency unit (paise)
+    currency: "INR",
+    receipt: `receipt_order_${Date.now()}`
+  };
+
+  try {
+    const order = await razorpay.orders.create(options);
+    res.json(order);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 
 
 
