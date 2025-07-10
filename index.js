@@ -75,7 +75,7 @@ app.use('/images', express.static('upload/images'));
 // Upload endpoint
 app.post('/upload', upload.single('product'), (req, res) => {
     console.log(req.get('host'));
-  const fullUrl = `${req.protocol}://my-ecom-backend.onrender.com/upload/${req.file.filename}`;
+  const fullUrl = `https://my-ecom-backend.onrender.com/upload/${req.file.filename}`;
   res.json({
     success: 1,
     image_url: fullUrl,
