@@ -74,7 +74,7 @@ const storage = new CloudinaryStorage({
     transformation: [{ width: 500, height: 500, crop: 'limit' }], // optional resize
   },
 });
-
+const upload = multer({ storage });
 // Route to upload image
 app.post('/upload', upload.single('product'), (req, res) => {
   res.json({
@@ -95,7 +95,7 @@ app.post('/upload', upload.single('product'), (req, res) => {
 //   },
 // });
 
-const upload = multer({ storage });
+// const upload = multer({ storage });
 
 // Serve static files from /upload/images
 // app.use('/images', express.static('upload/images'));
