@@ -12,6 +12,10 @@ const multer= require("multer");
 const path= require("path");
 const cors= require("cors");
 const Razorpay= require("razorpay");
+const { v2: cloudinary } = require('cloudinary');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+dotenv.config();
+
 
 app.use(express.json());
 app.use(cors());
@@ -54,33 +58,57 @@ app.get("/",(req, res)=>{
 
 
 
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Configure multer-storage-cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'ecommerce-products', // optional folder name in Cloudinary
+    allowed_formats: ['jpg', 'jpeg', 'png'],
+    transformation: [{ width: 500, height: 500, crop: 'limit' }], // optional resize
+  },
+});
+
+// Route to upload image
+app.post('/upload', upload.single('product'), (req, res) => {
+  res.json({
+    success: true,
+    image_url: req.file.path, // this is the cloudinary URL
+  });
+});
 
 
 // const multer = require('multer');
 // const path = require('path');
 
 // Set up storage
-const storage = multer.diskStorage({
-  destination: './upload/images',
-  filename: (req, file, cb) => {
-    cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: './upload/images',
+//   filename: (req, file, cb) => {
+//     cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
+//   },
+// });
 
 const upload = multer({ storage });
 
 // Serve static files from /upload/images
-app.use('/images', express.static('upload/images'));
+// app.use('/images', express.static('upload/images'));
 
 // Upload endpoint
-app.post('/upload', upload.single('product'), (req, res) => {
-    console.log(req.get('host'));
-  const fullUrl = `https://my-ecom-backend.onrender.com/images/${req.file.filename}`;
-  res.json({
-    success: 1,
-    image_url: fullUrl,
-  });
-});
+// app.post('/upload', upload.single('product'), (req, res) => {
+//     console.log(req.get('host'));
+//   const fullUrl = `https://my-ecom-backend.onrender.com/images/${req.file.filename}`;
+//   res.json({
+//     success: 1,
+//     image_url: fullUrl,
+//   });
+// });
 
 
 
