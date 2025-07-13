@@ -14,7 +14,7 @@ const cors= require("cors");
 const Razorpay= require("razorpay");
 const { v2: cloudinary } = require('cloudinary');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
-dotenv.config();
+
 
 
 app.use(express.json());
