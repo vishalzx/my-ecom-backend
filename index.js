@@ -25,7 +25,7 @@ app.use(express.urlencoded({extended: true}));
 
 
 app.use(cors({
-  origin: ["https://my-ecom-frontend-snowy.vercel.app/", "https://my-ecom-admin-254o.vercel.app/"],
+  origin: ["https://my-ecom-frontend-snowy.vercel.app/", "https://my-ecom-admin-mocha.vercel.app/"],
   credentials: true
 }));
 
@@ -77,6 +77,9 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage });
 // Route to upload image
 app.post('/upload', upload.single('product'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ success: false, message: 'No file uploaded' });
+    }
   res.json({
     success: true,
     image_url: req.file.path, // this is the cloudinary URL
