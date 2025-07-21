@@ -18,8 +18,8 @@ const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 
 app.use(express.json());
-app.use(cors());
 app.use(express.urlencoded({extended: true}));
+app.use(cors());
 // Database connection with mongodb
 // mongoose.connect("mongodb+srv://vishalgupta11zx:aarvidb@cluster0.evqqsqa.mongodb.net/e-commerce");
 
@@ -262,21 +262,25 @@ app.post('/signup', async(req, res)=>{
     if (!emailRegex.test(req.body.email)) {
         return res.status(400).json({ error: 'Please enter a valid email address' });
     }
-    const user= new Users({
-        name: req.body.username,
-        email: req.body.email,
-        password: req.body.password,
-        cartData: cart
-    })
+    else{
 
-    await user.save();
-    const data= {
-        user: {
-            id: user.id
+    
+        const user= new Users({
+            name: req.body.username,
+            email: req.body.email,
+            password: req.body.password,
+            cartData: cart
+        })
+
+        await user.save();
+        const data= {
+            user: {
+                id: user.id
+            }
         }
+        const token= jwt.sign(data, 'secret_ecom');
+        res.json({success: true, token})
     }
-    const token= jwt.sign(data, 'secret_ecom');
-    res.json({success: true, token})
 })
 
 
