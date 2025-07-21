@@ -256,12 +256,19 @@ app.post('/signup', async(req, res)=>{
     for (let index = 0; index < 300; index++) {
         cart[index]= 0;  
     }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(req.body.email)) {
+        return res.status(400).json({ error: 'Please enter a valid email address' });
+    }
     const user= new Users({
         name: req.body.username,
         email: req.body.email,
         password: req.body.password,
         cartData: cart
     })
+
     await user.save();
     const data= {
         user: {
