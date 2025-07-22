@@ -260,7 +260,7 @@ app.post('/signup', async(req, res)=>{
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(req.body.email)) {
-        return res.status(400).send({ error: 'Please enter a valid email address' });
+        return res.status(400).json({ success: false, errors: 'Please enter a valid email address' });
     }
     else{
 
