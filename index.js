@@ -256,7 +256,7 @@ app.post('/signup', async(req, res)=>{
     for (let index = 0; index < 300; index++) {
         cart[index]= 0;  
     }
-
+    console.log(req.body.email);
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(req.body.email)) {
