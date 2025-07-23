@@ -257,15 +257,12 @@ app.post('/signup', async(req, res)=>{
         cart[index]= 0;  
     }
     console.log(req.body.email);
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!emailRegex.test(req.body.email)) {
-        console.log(req.body.email);
-        return res.status(400).json({ success: false, error: "Please enter a valid email address" });
-    }
-    else{
-
-    
+    // if (!emailRegex.test(req.body.email)) {
+    //     console.log(req.body.email);
+    //     return res.status(400).json({ success: false, error: "Please enter a valid email address" });
+    // }    
         const user= new Users({
             name: req.body.username,
             email: req.body.email,
@@ -282,7 +279,6 @@ app.post('/signup', async(req, res)=>{
         }
         const token= jwt.sign(data, 'secret_ecom');
         res.json({success: true, token})
-    }
 })
 
 
