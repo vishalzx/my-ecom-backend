@@ -261,7 +261,7 @@ app.post('/signup', async(req, res)=>{
 
     if (!emailRegex.test(req.body.email)) {
         console.log(req.body.email);
-        return res.status(400).json({ success: false, error: "Please enter a valid email address" });
+        return res.status(400).json({ success: false, errors: "Please enter a valid email address" });
     }    
         const user= new Users({
             name: req.body.username,
